@@ -10,7 +10,12 @@ And this sample application will be run only on your local.
 
 Because, this is just sample application for who wanna be learning about an application on java with hexagonal architecture.
 
-### using infrastracture
+### Abstract
+
+![image of Hexagonal Archetecture Sample](docs/hexagonal-architecture-image01.png)
+
+
+### Using infrastracture
 
 Use the following infrastructure, assuming to use AWS.
 
