@@ -1,0 +1,63 @@
+plugins {
+	id 'java'
+}
+
+description = "Hexagon Architecture Sample"
+
+allprojects {
+	group = 'io.spring.start.sample'
+	version = '0.0.1-SNAPSHOT'
+
+	sourceCompatibility = '11'
+	targetCompatibility = '11'
+
+	repositories {
+		mavenCentral()
+	}
+
+	ext {
+		set('springCloudVersion', "Hoxton.SR6")
+	}
+
+}
+
+/*
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	sourceCompatibility = '11'
+	targetCompatibility = '11'
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	dependencies {
+		// spring boot
+		implementation 'org.springframework.boot:spring-boot-starter'
+		// lombok
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		// configuration processor
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+}
+ */

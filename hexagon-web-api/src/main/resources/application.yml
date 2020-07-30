@@ -1,0 +1,43 @@
+logging:
+  level:
+    web: DEBUG
+management:
+  endpoints:
+    web:
+      base-path: "/actuator"
+      exposure:
+        include:
+          - health
+          - info
+          - mappings
+  server:
+    port: ${MONITOR_PORT:8081}
+server:
+  port: ${PORT:8081}
+  servlet:
+    context-path: "/"
+spring:
+  application:
+    name: hexagon-web-api
+  profiles:
+    active: ${PROFILE:local}
+  ### DB
+  # database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_MASTER_URL:jdbc:mysql://127.0.0.1:3306/sample}
+    username: ${DB_MASTER_USERNAME:user}
+    password: ${DB_MASTER_PASSWORD:pass}
+  # flyway
+  flyway:
+    enabled: false
+  # jpa
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: validate
+  # dev
+  devtools:
+    livereload:
+      enabled: false
+

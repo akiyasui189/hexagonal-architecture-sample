@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  ### RDBMS
+  # MySQL
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sample
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      TZ: 'Asia/Tokyo'
+    ports:
+    - 3306:3306
+    volumes:
+    - ./docker/mysql/data:/var/lib/mysql
+    - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+  ### KVS/NoSQL
+  # Redis
+  redis:
+    container_name: redis
+    image: redis:6.0
+    ports:
+      - "6379:6379"
+    volumes:
+    - ./docker/redis/data:/data
+    command: redis-server
+  ### MQ
+  # elastic mq(SQS like)
+  elasticmq:
+    container_name: elasticmq
+    image: softwaremill/elasticmq
+    ports:
+      - 9324:9324
+  ### Object Storage
+  # minio(S3 like)
+  minio:
+    container_name: minio
+    image: minio/minio
+    environment:
+      - "MINIO_ACCESS_KEY=MINIO_ACCESS_KEY"
+      - "MINIO_SECRET_KEY=MINIO_SECRET_KEY"
+    ports:
+      - "9000:9000"
+    volumes:
+      - "./docker/minio/data:/data"
+    command: server /data
+  # for create bucket on minio
+  minioclient:
+    container_name: minioc
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 MINIO_ACCESS_KEY MINIO_SECRET_KEY) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/sample;
+      /usr/bin/mc policy download myminio/sample;
+      exit 0;
+      "
+
+### EOF
