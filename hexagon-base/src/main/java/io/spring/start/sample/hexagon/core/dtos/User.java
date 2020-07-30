@@ -1,5 +1,6 @@
 package io.spring.start.sample.hexagon.core.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.spring.start.sample.hexagon.core.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class User {
     private Long id;
     final private String account;
+    @JsonIgnore
     final private String passwordDigest;
     final private UserStatus status;
     final private LocalDateTime createdAt;

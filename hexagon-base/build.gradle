@@ -14,6 +14,8 @@ configurations {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	// jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
 	//implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	//implementation 'org.springframework.boot:spring-boot-starter-web'

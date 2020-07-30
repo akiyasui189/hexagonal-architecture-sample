@@ -26,7 +26,12 @@ public class UserRepositoryPersistenceImpl implements UserRepository {
         // TODO: use JPA
         UserEntity userEntity = convertToEntity(user);
         userMapper.insert(userEntity);
-        return user;
+        return Optional.ofNullable(
+                userMapper.findByEmailAndStatus(
+                        user.getAccount(),
+                        UserStatus.REGISTERED.name()))
+                .map(this::convertToDto)
+                .orElse(user);
         /*
         UserEntity userEntity = convertToEntity(user);
         userEntity = userDao.save(userEntity);
@@ -36,9 +41,7 @@ public class UserRepositoryPersistenceImpl implements UserRepository {
 
     @Override
     public Optional<User> getUser(Long id, UserStatus status) {
-        return Optional.ofNullable(
-                userMapper.findByIdAndStatus(id, status.name())
-        );
+        return Optional.ofNullable(convertToDto(userMapper.findByIdAndStatus(id, status.name())));
     }
 
     @Override
@@ -65,6 +68,9 @@ public class UserRepositoryPersistenceImpl implements UserRepository {
     }
 
     private User convertToDto (UserEntity user) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return null;
+        }
         return new User(
                 user.getId(),
                 user.getAccount(),

@@ -127,10 +127,32 @@ $ docker-compose stop
 $ docker-compose rm -f
 ```
 
-##### set up Web API application with Database by flyway
+##### Set up Web API application with Database by flyway
 
 ```
 $ gradle hexagon-web-api:bootRun
 ```
+
+##### Check Api Reference by Spring Fox Swagger UI
+
+```
+http://localhost:8081/swagger-ui/
+```
+
+##### add test data
+
+```
+# add acount
+$ curl -kv -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' \
+-d '{"account": "akiyasui189@users.noreply.github.com", "password": "Password1", "confirmPassword": "Password1"}' \
+'http://localhost:8081/users/register'
+
+# get user list
+$ curl -kv -X GET -H 'Accept: application/json' 'http://localhost:8081/users/new-registered-users' | jq
+```
+
+
+
+
 
 
