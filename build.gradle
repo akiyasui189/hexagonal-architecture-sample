@@ -15,20 +15,15 @@ allprojects {
 		mavenCentral()
 	}
 
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'groovy'
+
 	ext {
 		set('springCloudVersion', "Hoxton.SR6")
 	}
-
-}
-
-/*
-subprojects {
-	apply plugin: 'java'
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-
-	sourceCompatibility = '11'
-	targetCompatibility = '11'
 
 	configurations {
 		compileOnly {
@@ -37,21 +32,40 @@ subprojects {
 	}
 
 	dependencies {
-		// spring boot
+		///// spring framework
+		// spring boot starter
 		implementation 'org.springframework.boot:spring-boot-starter'
+		///// utilities
 		// lombok
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 		// configuration processor
 		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		///// test
+		/// spock
+		// groovy
+		testImplementation("org.codehaus.groovy:groovy-all:2.5.12")
+		// spock
+		testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
+		// spring support
+		testImplementation("org.spockframework:spock-spring:1.3-groovy-2.5")
+		// allows mocking of classes
+		testImplementation("net.bytebuddy:byte-buddy:1.10.10")
+		// allows mocking of classes without default constructor
+		testImplementation("org.objenesis:objenesis:3.1")
+		testImplementation("cglib:cglib-nodep:3.2.12")
+		// spring boot starter test
 		testImplementation('org.springframework.boot:spring-boot-starter-test') {
-			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+			// not exclude for spock 1.3 (junit4)
+			//exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 		}
 	}
 
-	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	sourceSets {
+		test {
+			java {
+				srcDir 'src/test/groovy'
+			}
 		}
 	}
 
@@ -60,4 +74,3 @@ subprojects {
 	}
 
 }
- */
