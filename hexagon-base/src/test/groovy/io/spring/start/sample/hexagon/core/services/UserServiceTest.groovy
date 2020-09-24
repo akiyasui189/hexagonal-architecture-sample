@@ -9,6 +9,7 @@ import spock.lang.Unroll
 
 import java.time.LocalDateTime
 
+@Unroll
 class UserServiceTest extends Specification {
 
     def "test register(): failed, password can not confirm"() {
@@ -25,7 +26,6 @@ class UserServiceTest extends Specification {
           actual.getMessage() == "Can not confirm password."
     }
 
-    @Unroll
     def "test register(): success, #testCase"() {
         given:
           // mock
@@ -72,7 +72,7 @@ class UserServiceTest extends Specification {
           "test case 2" | "email"   | "passphrase" | DigestUtils.sha256Hex("passphrase")
     }
 
-    def "test getUser(): success."() {
+    def "test getUser(): success, #id, #status"() {
         given:
           // mock response
           def res = Optional.of(new User(
@@ -92,11 +92,9 @@ class UserServiceTest extends Specification {
           1 * repository.getUser({
               def arg = it as Long
               assert arg == id
-              return true
           }, {
-              it as UserStatus
-              assert it == status
-              return true
+              def arg2 = it as UserStatus
+              assert arg2 == status
           }) >> res
           // test target
           def target = new UserService(repository)
